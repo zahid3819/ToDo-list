@@ -3,44 +3,46 @@ import TodoItem from './components/TodoItem';
 import TodoInput from './components/TodoInput';
 import { StyleSheet, View, FlatList } from 'react-native';
 
-  
+
 export default function App() {
   //to show Todo
   const [showTodosList, setShowTodosList] = useState([]);
 
-  function addTodoText(enteredTodoText){
-    if(enteredTodoText != ""){
-    setShowTodosList([...showTodosList, {text: enteredTodoText, id: Math.random().toString()}]);
+  function addTodoText(enteredTodoText) {
+    if (enteredTodoText != "") {
+      setShowTodosList([...showTodosList, { text: enteredTodoText, id: Math.random().toString() }]);
     }
   }
-
+  function deleteHandler(id) {
+    setShowTodosList(showTodosList.filter(todo =>todo.id != id))
+  }
   return (
     <View style={styles.container}>
-      <TodoInput onTodoAdded={addTodoText}/>
-      <FlatList style={styles.showTodosList} data={showTodosList} renderItem={(todoItem) =>{
-        return(
-          <TodoItem text={todoItem.item.text}/>
+      <TodoInput onTodoAdded={addTodoText} />
+      <FlatList style={styles.showTodosList} data={showTodosList} renderItem={(todoItem) => {
+        return (
+          <TodoItem text={todoItem.item.text} id={todoItem.item.id} onDelete={deleteHandler} />
         );
-      }} keyExtractor={(item, index) =>{
-        return(
+      }} keyExtractor={(item, index) => {
+        return (
           item.id
         )
-      }}/>
+      }} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-   paddingTop: 30,
-   paddingHorizontal: 10
+    paddingTop: 30,
+    paddingHorizontal: 10
   },
-  buttonToDo:{
+  buttonToDo: {
     borderRadius: 10,
   },
-  showTodosList:{
+  showTodosList: {
     height: '82%',
   },
 
-  
+
 });
